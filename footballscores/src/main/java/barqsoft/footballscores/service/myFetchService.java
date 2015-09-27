@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -24,6 +25,8 @@ import java.util.Vector;
 
 import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.Status;
+import barqsoft.footballscores.Utilies;
 
 /**
  * Created by yehya khaled on 3/2/2015.
@@ -83,14 +86,18 @@ public class myFetchService extends IntentService {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
+                // STATUS - SERVER DOWN
+                Utilies.setRequestStatus(this, Status.STATUS_SERVER_DOWN);
                 return;
             }
             JSON_data = buffer.toString();
 
             Log.d(LOG_TAG, "final json result -> " + JSON_data);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             Log.e(LOG_TAG, "Exception here" + e.getMessage());
+            // STATUS - SERVER DOWN
+            Utilies.setRequestStatus(this, Status.STATUS_SERVER_DOWN);
         } finally {
             if (m_connection != null) {
                 m_connection.disconnect();
@@ -122,6 +129,9 @@ public class myFetchService extends IntentService {
             } else {
                 //Could not Connect
                 Log.d(LOG_TAG, "Could not connect to server.");
+
+                if (!Utilies.isInternetConnected(this))
+                    Utilies.setRequestStatus(this, Status.STATUS_SERVER_DOWN);
             }
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());
@@ -167,7 +177,6 @@ public class myFetchService extends IntentService {
 
         try {
             JSONArray matches = new JSONObject(JSONdata).getJSONArray(FIXTURES);
-
 
 
             //ContentValues to be inserted
@@ -276,10 +285,19 @@ public class myFetchService extends IntentService {
                     DatabaseContract.BASE_CONTENT_URI, insert_data);
 
             Log.v(LOG_TAG, "Succesfully Inserted : " + String.valueOf(inserted_data));
+
+
+            // STATUS - OK
+            Utilies.setRequestStatus(this, Status.STATUS_OK);
+
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage());
+
+            // STATUS - INVALID
+            Utilies.setRequestStatus(this, Status.STATUS_SERVER_INVALID);
         }
 
     }
+
 }
 

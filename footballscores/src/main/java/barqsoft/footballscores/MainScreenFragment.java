@@ -1,8 +1,10 @@
 package barqsoft.footballscores;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -19,11 +21,12 @@ import barqsoft.footballscores.service.myFetchService;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> , SharedPreferences.OnSharedPreferenceChangeListener{
     public scoresAdapter mAdapter;
     public static final int SCORES_LOADER = 0;
     private String[] fragmentdate = new String[1];
     private int last_selected_item = -1;
+    View rootView;
 
     public MainScreenFragment() {
     }
@@ -41,7 +44,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         update_scores();
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final ListView score_list = (ListView) rootView.findViewById(R.id.scores_list);
         mAdapter = new scoresAdapter(getActivity(), null, 0);
         score_list.setAdapter(mAdapter);
@@ -97,4 +100,43 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     }
 
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_status_key))) {
+
+            TextView tv = (TextView) rootView.findViewById(R.id.emptyView);
+            int status = PreferenceManager.getDefaultSharedPreferences(getActivity()).getInt(key, Status.STATUS_OK);
+
+            switch (status) {
+                case Status.STATUS_OK:
+                    tv.setText("");
+                    break;
+                case Status.STATUS_NO_DATA:
+                    tv.setText(getString(R.string.test_text));
+                    break;
+                case Status.STATUS_SERVER_DOWN:
+                    tv.setText(getString(R.string.no_internet));
+                    break;
+                case Status.STATUS_SERVER_INVALID:
+                    tv.setText(getString(R.string.invalid_data));
+                    break;
+                case Status.STATUS_UNKNOWN:
+                    tv.setText(getString(R.string.unknown_error));
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
+        Utilies.setRequestStatus(getActivity(), Status.STATUS_OK);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+    }
 }
