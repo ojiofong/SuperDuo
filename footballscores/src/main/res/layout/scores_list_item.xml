@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/scores_list_item_id"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item"
     android:elevation="4dp"
@@ -10,9 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal"
-        android:paddingTop="5dp"
-        android:baselineAligned="false">
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -23,18 +23,19 @@
             <ImageView
                 android:id="@+id/home_crest"
                 android:layout_width="wrap_content"
-                android:contentDescription="@string/home_icon_desc"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:contentDescription="@string/home_icon_desc" />
 
             <TextView
                 android:id="@+id/home_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:contentDescription="@string/home_team"
                 android:gravity="center"
-                android:textColor="@android:color/black"
                 android:text="@string/test_text"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/TeamNames" />
         </LinearLayout>
 
@@ -48,11 +49,12 @@
                 android:id="@+id/score_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:textColor="@android:color/black"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:contentDescription="@string/match_score"
                 android:gravity="center"
                 android:text="@string/test_text"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/Score" />
 
             <TextView
@@ -60,10 +62,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:textColor="@android:color/black"
                 android:layout_weight="1"
+                android:contentDescription="@string/match_time"
                 android:gravity="center"
-                android:text="@string/test_text" />
+                android:text="@string/test_text"
+                android:textColor="@android:color/black" />
 
         </LinearLayout>
 
@@ -84,10 +87,11 @@
                 android:id="@+id/away_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
                 android:layout_gravity="center"
+                android:contentDescription="@string/away_team"
                 android:gravity="center"
                 android:text="@string/test_text"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/TeamNames" />
         </LinearLayout>
     </LinearLayout>
@@ -95,7 +99,7 @@
     <FrameLayout
         android:id="@+id/details_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 </LinearLayout>
 
 

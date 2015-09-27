@@ -47,6 +47,13 @@
 
     <string name="home_icon_desc">Home team logo</string>
     <string name="away_icon_desc">Away team logo</string>
+    <string name="home_team">Home team</string>
+    <string name="away_team">Away team</string>
+    <string name="league">League</string>
+    <string name="match_day">Match day</string>
+    <string name="match_time">Match time</string>
+    <string name="match_score">Match score</string>
+    <string name="empty_text_desc">Displays status message to user</string>
 
 
 </resources>
