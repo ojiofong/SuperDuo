@@ -43,4 +43,8 @@
     <string name="unknown_error">Unkown Error</string>
 
 
+    <string name="home_icon_desc">Home team logo</string>
+    <string name="away_icon_desc">Away team logo</string>
+
+
 </resources>
